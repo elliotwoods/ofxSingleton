@@ -43,6 +43,13 @@ ofxSingleton also provides a class `ofxSingleton::Register` (which is itself a s
 * Since some logic must be run each time you call `MySingletonClass::X()`, you might want to keep a local const reference if you plan on calling it many times in the same function.
 * Instead of `ofxSingleton::Singleton`, you also have the option to instead inherit from `ofxSingleton::UnmanagedSingleton` which has fewer features and does not put the singleton into the singleton registry. Note that the line you must put into the class definition is different and looks like `std::shared_ptr<MyClassType> MyClassType::singleton;`
 
+### Sharing singletons between dynamically loaded libraries
+
+The general pattern for this follows:
+
+* All shared singletons are instantiated by the application (singletons cannot be shared between libraries if they are not in the application itself)
+* Each library and the application has an `ofxSingleton::Register`
+
 ## License
 
 MIT License.
