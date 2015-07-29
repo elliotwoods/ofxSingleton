@@ -5,23 +5,26 @@
 
 #include <map>
 #include <typeinfo>
+#include <memory>
+#include <string>
 
 namespace ofxSingleton {
 	///A register of all active and inactive singletons
 	class Register : public UnmanagedSingleton<Register> {
 	public:
-		typedef std::map<const std::type_info *, BaseStore *> Entries;
-		typedef std::pair<const std::type_info *, BaseStore *> Pair;
+		typedef std::map<std::string, BaseStore *> Entries;
+		typedef std::pair<std::string, BaseStore *> Pair;
 
-		Register();
 		const Entries & getEntries() const; ///Called on master from client
 		void addEntry(BaseStore *);
 
 		///Call this function to synchronise this Register to a master register
-		void setParentRegister(Register *);
+		void setParentRegister(std::shared_ptr<Register>);
 	private:
-		void syncSingleton(const std::type_info *);
+		void syncSingleton(std::string typeName);
 		Entries entries;
-		const Register * parentRegister;
+
+		//decided against weak_ptr because we probably want to keep the parent's stuff even if it somehow unloads
+		std::shared_ptr<Register> parentRegister;
 	};
 }

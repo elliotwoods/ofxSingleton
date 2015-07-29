@@ -29,5 +29,8 @@
     <ClCompile Include="..\src\ofxSingleton\Register.cpp">
       <Filter>src\ofxSingleton</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ofxSingleton\BaseStore.cpp">
+      <Filter>src\ofxSingleton</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

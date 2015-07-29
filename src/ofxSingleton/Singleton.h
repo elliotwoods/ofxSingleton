@@ -26,20 +26,22 @@ namespace ofxSingleton {
 			}
 
 			///Always returns a valid pointer (i.e. create on first call)
-			std::shared_ptr<ClassType> getInstance() {
+			std::shared_ptr<ClassType> getInstance() {	
 				if (!this->instance) {
-					this->instance = std::make_shared<ClassType>();
+					//no instance yet here
+					if (this->hasMaster()) {
+						//we have a master application, let's ask that for a valid instance
+						auto masterStore = dynamic_cast<SingletonStore*>(this->masterStoreUntyped);
+						if (masterStore) {
+							//this may cause an early initialisation on the master store, but seems like a safe strategy
+							this->instance = masterStore->getInstance();
+						}
+					} else {
+						//we have no master, we will create the instance
+						this->instance = std::make_shared<ClassType>();
+					}
 				}
 				return this->instance;
-			}
-		protected:
-			///Called from the base type when setMaster(..) is called from ofxSingleton::Register
-			void syncToMaster() override {
-				auto masterStore = dynamic_cast<SingletonStore*>(this->masterStoreUntyped);
-				if (masterStore) {
-					//this may cause an early initialisation on the master store, but seems like a safe strategy
-					this->instance = masterStore->getInstance();
-				}
 			}
 		};
 

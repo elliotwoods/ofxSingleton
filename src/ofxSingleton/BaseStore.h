@@ -3,23 +3,20 @@
 #include <typeinfo>
 
 namespace ofxSingleton {
+	/**
+	The BaseStore is an abstract storage class for singletons.
+	Each managed (default) singleton uses a Store to keep the singleton.
+	The store can talk to stores in other dynamic libs (e.g. to share singletons between dynamic libs)
+	**/
 	class BaseStore {
 	public:
-		BaseStore() {
-			this->masterStoreUntyped = nullptr;
-		}
-
+		BaseStore();
 		virtual const std::type_info * getTypeInfo() const = 0;
 
 		///Useful for when you're synchronising singletons between dynamic libraries
-		void setMaster(BaseStore * masterStoreUntyped) {
-			this->masterStoreUntyped = masterStoreUntyped;
-			syncToMaster();
-		}
+		void setMaster(BaseStore *);
+		bool hasMaster() const;
 	protected:
-		///called from BaseStore and handled in derived class. returns true if we got an instance from the master
-		virtual void syncToMaster() = 0;
-
 		///In a dynamically loaded library, this will be the store for the singleton in the master app
 		BaseStore * masterStoreUntyped;
 	};

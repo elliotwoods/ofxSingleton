@@ -10,11 +10,6 @@ namespace ofxSingleton {
 	std::shared_ptr<Register> Register::singleton;
 
 	//----------
-	Register::Register() {
-		this->parentRegister = nullptr;
-	}
-
-	//----------
 	const Register::Entries & Register::getEntries() const {
 		return this->entries;
 	}
@@ -22,17 +17,17 @@ namespace ofxSingleton {
 	//----------
 	void Register::addEntry(BaseStore * baseStore) {
 		if (baseStore) {
-			const auto typeInfo = baseStore->getTypeInfo();
+			const auto typeName = string(baseStore->getTypeInfo()->name());
 
-			this->entries.insert(Pair(typeInfo, baseStore));
+			this->entries.insert(Pair(typeName, baseStore));
 
 			//sync it to the master (if we're master then nothing happens)
-			this->syncSingleton(typeInfo);
+			this->syncSingleton(typeName);
 		}
 	}
 
 	//----------
-	void Register::setParentRegister(Register * parentRegister) {
+	void Register::setParentRegister(shared_ptr<Register> parentRegister) {
 		this->parentRegister = parentRegister;
 
 		for (auto & entry : this->entries) {
@@ -41,17 +36,17 @@ namespace ofxSingleton {
 	}
 
 	//----------
-	void Register::syncSingleton(const std::type_info * singletonType) {
+	void Register::syncSingleton(string typeName) {
 		if (this->parentRegister) {
 			//check if it exists in the master registry
-			auto findParentEntry = this->parentRegister->entries.find(singletonType);
+			auto findParentEntry = this->parentRegister->entries.find(typeName);
 			if (findParentEntry != this->parentRegister->entries.end()) {
 				//entry for this singleton exists in master
-				this->entries[singletonType]->setMaster(findParentEntry->second);
+				this->entries[typeName]->setMaster(findParentEntry->second);
 			}
 			else {
 				//problem time, the singleton is registered in the client but not the master
-				ofLogWarning("ofxSingleton") << "Singleton entry '" << singletonType->name() << "' exists in Client registry but not in Master register. Cannot synchronise singleton";
+				ofLogWarning("ofxSingleton") << "Singleton entry '" << typeName << "' exists in Client registry but not in Master register. Cannot synchronise singleton";
 			}
 		}
 	}
