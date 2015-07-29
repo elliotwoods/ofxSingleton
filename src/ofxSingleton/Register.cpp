@@ -7,7 +7,7 @@ using namespace std;
 
 namespace ofxSingleton {
 	//----------
-	std::shared_ptr<Register> Register::singleton;
+	template<> std::shared_ptr<Register> UnmanagedSingleton<Register>::singleton;
 
 	//----------
 	const Register::Entries & Register::getEntries() const {

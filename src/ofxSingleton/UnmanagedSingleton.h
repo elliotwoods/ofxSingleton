@@ -15,7 +15,7 @@ namespace ofxSingleton {
 			}
 			return ClassType::singleton;
 		}
-	private:
+	protected:
 		static std::shared_ptr<ClassType> singleton;
 	};
 }
