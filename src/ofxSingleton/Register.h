@@ -15,16 +15,17 @@ namespace ofxSingleton {
 		typedef std::map<std::string, BaseStore *> Entries;
 		typedef std::pair<std::string, BaseStore *> Pair;
 
+		Register();
 		const Entries & getEntries() const; ///Called on master from client
 		void addEntry(BaseStore *);
 
 		///Call this function to synchronise this Register to a master register
-		void setParentRegister(std::shared_ptr<Register>);
+		void setParentRegister(Register *);
 	private:
 		void syncSingleton(std::string typeName);
 		Entries entries;
 
 		//decided against weak_ptr because we probably want to keep the parent's stuff even if it somehow unloads
-		std::shared_ptr<Register> parentRegister;
+		Register * parentRegister;
 	};
 }

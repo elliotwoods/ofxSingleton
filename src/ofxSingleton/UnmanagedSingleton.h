@@ -9,13 +9,13 @@ namespace ofxSingleton {
 		static ClassType & X() {
 			return * ClassType::getSingleton();
 		}
-		static std::shared_ptr<ClassType> getSingleton() {
+		static ClassType * getSingleton() {
 			if (!ClassType::singleton) {
-				ClassType::singleton = std::make_shared<ClassType>();
+				ClassType::singleton = new ClassType();
 			}
 			return ClassType::singleton;
 		}
 	protected:
-		static std::shared_ptr<ClassType> singleton;
+		static ClassType * singleton;
 	};
 }

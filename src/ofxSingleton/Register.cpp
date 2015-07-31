@@ -7,7 +7,12 @@ using namespace std;
 
 namespace ofxSingleton {
 	//----------
-	template<> std::shared_ptr<Register> UnmanagedSingleton<Register>::singleton;
+	Register * UnmanagedSingleton<Register>::singleton;
+
+	//----------
+	Register::Register() {
+		this->parentRegister = nullptr;
+	}
 
 	//----------
 	const Register::Entries & Register::getEntries() const {
@@ -27,7 +32,7 @@ namespace ofxSingleton {
 	}
 
 	//----------
-	void Register::setParentRegister(shared_ptr<Register> parentRegister) {
+	void Register::setParentRegister(Register * parentRegister) {
 		this->parentRegister = parentRegister;
 
 		for (auto & entry : this->entries) {
