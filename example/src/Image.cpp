@@ -1,7 +1,7 @@
 #include "Image.h"
 
 // THIS LINE IS IMPORTANT! otherwise you'll get linker errors
-Image::SingletonStore Image::singletonStore;
+OFXSINGLETON_DEFINE(Image);
 
 //----------
 Image::Image() {
