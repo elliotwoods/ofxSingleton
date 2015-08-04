@@ -5,10 +5,9 @@
 
 using namespace std;
 
-namespace ofxSingleton {
-	//----------
-	Register * UnmanagedSingleton<Register>::singleton;
+OFXSINGLETON_DEFINE_UNMANAGED(ofxSingleton::Register)
 
+namespace ofxSingleton {	
 	//----------
 	Register::Register() {
 		this->parentRegister = nullptr;

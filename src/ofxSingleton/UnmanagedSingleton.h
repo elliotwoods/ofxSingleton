@@ -2,20 +2,18 @@
 
 #include <memory>
 
+#define OFXSINGLETON_DEFINE_UNMANAGED(X) std::shared_ptr<X> ofxSingleton::UnmanagedSingleton<X>::getInstance() { \
+	static std::shared_ptr<X> instance = make_shared<X>(); \
+	return instance; \
+}
+
 namespace ofxSingleton {
 	template<typename ClassType>
 	class UnmanagedSingleton {
 	public:
 		static ClassType & X() {
-			return * ClassType::getSingleton();
+			return * ClassType::getInstance();
 		}
-		static ClassType * getSingleton() {
-			if (!ClassType::singleton) {
-				ClassType::singleton = new ClassType();
-			}
-			return ClassType::singleton;
-		}
-	protected:
-		static ClassType * singleton;
+		static std::shared_ptr<ClassType> getInstance();
 	};
 }
