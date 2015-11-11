@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#define OFXSINGLETON_DEFINE_UNMANAGED(X) std::shared_ptr<X> ofxSingleton::UnmanagedSingleton<X>::getInstance() { \
+#define OFXSINGLETON_DEFINE_UNMANAGED(X) template<> std::shared_ptr<X> ofxSingleton::UnmanagedSingleton<X>::getInstance() { \
 	static std::shared_ptr<X> instance = make_shared<X>(); \
 	return instance; \
 }
