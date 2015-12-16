@@ -6,7 +6,7 @@
 
 #include <memory>
 
-#define OFXSINGLETON_DEFINE(X) ofxSingleton::Singleton<X>::SingletonStore * ofxSingleton::Singleton<X>::singletonStore
+#define OFXSINGLETON_DEFINE(X) template<> ofxSingleton::Singleton<X>::SingletonStore * ofxSingleton::Singleton<X>::singletonStore = NULL
 
 namespace ofxSingleton {
 	template<typename ClassType>
@@ -49,7 +49,7 @@ namespace ofxSingleton {
 
 		static SingletonStore * getSingletonStore() {
 			if (!ClassType::singletonStore) {
-				ClassType::singletonStore = new ClassType::SingletonStore();
+				ClassType::singletonStore = new typename ClassType::SingletonStore();
 			}
 			return ClassType::singletonStore;
 		}
