@@ -43,6 +43,10 @@ namespace ofxSingleton {
 				}
 				return this->instance;
 			}
+
+			void clearInstance() override {
+				this->instance.reset();
+			}
 		protected:
 			std::shared_ptr<ClassType> instance;
 		};

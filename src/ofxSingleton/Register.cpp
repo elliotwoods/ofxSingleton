@@ -11,6 +11,8 @@ namespace ofxSingleton {
 	//----------
 	Register::Register() {
 		this->parentRegister = nullptr;
+
+		ofAddListener(ofEvents().exit, this, &Register::onExit);
 	}
 
 	//----------
@@ -51,6 +53,15 @@ namespace ofxSingleton {
 			else {
 				//problem time, the singleton is registered in the client but not the master
 				ofLogWarning("ofxSingleton") << "Singleton entry '" << typeName << "' exists in Client registry but not in Master register. Cannot synchronise singleton";
+			}
+		}
+	}
+
+	//----------
+	void Register::onExit(ofEventArgs &) {
+		for (auto singletonStore : this->getEntries()) {
+			if (singletonStore.second) {
+				singletonStore.second->clearInstance();
 			}
 		}
 	}

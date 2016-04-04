@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ofEvents.h"
+
 #include "UnmanagedSingleton.h"
 #include "BaseStore.h"
 
@@ -23,6 +25,7 @@ namespace ofxSingleton {
 		void setParentRegister(Register *);
 	private:
 		void syncSingleton(std::string typeName);
+		void onExit(ofEventArgs &);
 		Entries entries;
 
 		//decided against weak_ptr because we probably want to keep the parent's stuff even if it somehow unloads

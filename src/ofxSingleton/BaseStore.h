@@ -16,8 +16,11 @@ namespace ofxSingleton {
 		///Useful for when you're synchronising singletons between dynamic libraries
 		void setMaster(BaseStore *);
 		bool hasMaster() const;
+
+		virtual void clearInstance() = 0;
 	protected:
 		///In a dynamically loaded library, this will be the store for the singleton in the master app
 		BaseStore * masterStoreUntyped;
+
 	};
 }
